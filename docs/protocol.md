@@ -223,7 +223,7 @@ Implementations must map internal error classifications to standard exit codes:
 | `1` | `INTERNAL_ERROR` | Unhandled internal exception or invariant failure |
 | `1` | `UNKNOWN_ERROR` | Generic unexpected error |
 | `2` | `INVALID_REQUEST` | Missing operation name, unknown operation, or invalid CLI flag usage |
-| `2` | `VALIDATION_ERROR` | Parameter validation failure (`UNKNOWN_PARAM`, `TYPE_MISMATCH`, `MISSING_REQUIRED`, `ENUM_VIOLATION`, `MIXED_INPUT`, `RESERVED_NAME`) |
+| `2` | `VALIDATION_ERROR` | Parameter validation failure (`UNKNOWN_PARAM`, `TYPE_MISMATCH`, `MISSING_REQUIRED`, `ENUM_VIOLATION`, `FORM_NOT_ALLOWED`, `MISSING_VALUE`, `EXTRA_POSITIONAL`, `DOCUMENT_PARSE`, `OP_MISMATCH`, `MIXED_INPUT`, `DUPLICATE_FLAG`, `RESERVED_NAME`) |
 | `3` | `PARSE_ERROR` | Malformed JSON document, GraphQL syntax error, or unreadable document input |
 | `4` | `NOT_FOUND` | Requested entity, branch, revision, or file not found |
 | `5` | `CONFLICT` | State conflict (e.g. merge conflict, existing branch, conflicting resource) |

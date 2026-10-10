@@ -156,7 +156,7 @@ OpenAPI expresses far richer constraints; lmapi keeps structure and cardinality 
 
 | Component | Role | Status |
 |---|---|---|
-| `lmapi` (this repo) | the specification: protocol document, `cli.schema.v1` JSON Schema, conformance vectors | `docs/protocol.md`, `schema/`, `conformance/` |
+| `lmapi` (this repo) | the specification: protocol document, `cli.schema.v1` JSON Schema, conformance vectors | [`docs/protocol.md`](docs/protocol.md), [`schema/`](schema/cli.schema.v1.schema.json), [`conformance/`](conformance/) |
 | [`lmts`](https://github.com/lmctl-ai/lmts) | TypeScript SDK: `./validate` (client, zero dependencies), `./server` (`runCli`, `checkPolicy`, `spawnCommand`), interpreter, classifier and prompt renderer | exists; runs every conformance vector |
 | `lmrust`, `lmpython` | SDKs for other languages | planned; they must pass the same vectors |
 | `git2`, `gh2`, `aws2` | reference tools for git, GitHub and AWS, built on the `lmts` server runtime | exist; every operation has an authored schema |
@@ -184,4 +184,4 @@ OpenAPI expresses far richer constraints; lmapi keeps structure and cardinality 
 
 ## License
 
-MIT. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).
