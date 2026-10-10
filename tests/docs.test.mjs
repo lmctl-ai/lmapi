@@ -15,11 +15,12 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = resolve(__dirname, '..');
 const PROTOCOL_MD = resolve(ROOT_DIR, 'docs/protocol.md');
+const DISTRIBUTION_MD = resolve(ROOT_DIR, 'docs/distribution.md');
 const README_MD = resolve(ROOT_DIR, 'README.md');
 const CONFORMANCE_README = resolve(ROOT_DIR, 'conformance/README.md');
 const CONFORMANCE_DIR = resolve(ROOT_DIR, 'conformance');
 
-const MARKDOWN_FILES = [README_MD, PROTOCOL_MD, CONFORMANCE_README];
+const MARKDOWN_FILES = [README_MD, PROTOCOL_MD, DISTRIBUTION_MD, CONFORMANCE_README];
 
 const EXPECTED_EXIT_CODES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 127];
 

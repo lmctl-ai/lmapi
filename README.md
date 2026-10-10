@@ -111,8 +111,7 @@ Checklist; the normative text is `lmts/docs/protocol.md` (to move into the `lmap
 
 ## 4. What a client does
 
-1. **Pin the schema.** Obtain it once (`<tool> --schema > tool.cli.schema.v1.json`) and read it
-   from disk; never run the tool to discover it during checking or dry runs.
+1. **Pin the schema.** Obtain it once (`<tool> --schema > tool.cli.schema.v1.json`) or import it remotely via the [distribution convention](docs/distribution.md) (`@owner/repo[#ref]`), and read it from disk; never run the tool to discover it during checking or dry runs.
 2. **Validate before spawning.** `validate(op, params)` from the schema alone: unknown param with
    an edit-distance suggestion, missing required, type, enum, cardinality, reserved names. All
    issues are collected, not just the first.
@@ -156,7 +155,7 @@ OpenAPI expresses far richer constraints; lmapi keeps structure and cardinality 
 
 | Component | Role | Status |
 |---|---|---|
-| `lmapi` (this repo) | the specification: protocol document, `cli.schema.v1` JSON Schema, conformance vectors | [`docs/protocol.md`](docs/protocol.md), [`schema/`](schema/cli.schema.v1.schema.json), [`conformance/`](conformance/) |
+| `lmapi` (this repo) | the specification: protocol document, distribution convention, `cli.schema.v1` JSON Schema, conformance vectors | [`docs/protocol.md`](docs/protocol.md), [`docs/distribution.md`](docs/distribution.md), [`schema/`](schema/cli.schema.v1.schema.json), [`conformance/`](conformance/) |
 | [`lmts`](https://github.com/lmctl-ai/lmts) | TypeScript SDK: `./validate` (client, zero dependencies), `./server` (`runCli`, `checkPolicy`, `spawnCommand`), interpreter, classifier and prompt renderer | exists; runs every conformance vector |
 | `lmrust`, `lmpython` | SDKs for other languages | planned; they must pass the same vectors |
 | `git2`, `gh2`, `aws2` | reference tools for git, GitHub and AWS, built on the `lmts` server runtime | exist; every operation has an authored schema |
