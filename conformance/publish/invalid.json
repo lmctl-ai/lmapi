@@ -226,6 +226,140 @@
         "ok": false,
         "issues": [{ "code": "ENUM_VIOLATION", "op": "status" }]
       }
+    },
+    {
+      "name": "product with empty name is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "",
+          "supported": ">=1.0.0",
+          "detect": { "argv": ["git"], "pattern": "(\\d+)" }
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE" }]
+      }
+    },
+    {
+      "name": "product with invalid supported range is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "git",
+          "supported": "^1.0.0",
+          "detect": { "argv": ["git"], "pattern": "(\\d+)" }
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE" }]
+      }
+    },
+    {
+      "name": "product with empty detect argv is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "git",
+          "supported": ">=1.0.0",
+          "detect": { "argv": [], "pattern": "(\\d+)" }
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE" }]
+      }
+    },
+    {
+      "name": "product with pattern lacking capture group is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "git",
+          "supported": ">=1.0.0",
+          "detect": { "argv": ["git"], "pattern": "\\d+\\.\\d+\\.\\d+" }
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE" }]
+      }
+    },
+    {
+      "name": "product with multiple capture groups is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "git",
+          "supported": ">=1.0.0",
+          "detect": { "argv": ["git"], "pattern": "(\\d+)\\.(\\d+)" }
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE" }]
+      }
+    },
+    {
+      "name": "product with pattern exceeding 200 characters is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "git",
+          "supported": ">=1.0.0",
+          "detect": { "argv": ["git"], "pattern": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa(\\d+)" }
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE" }]
+      }
+    },
+    {
+      "name": "product with extra property is rejected as UNKNOWN_PARAM",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "product": {
+          "name": "git",
+          "supported": ">=1.0.0",
+          "detect": { "argv": ["git"], "pattern": "(\\d+)" },
+          "extra": true
+        },
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "UNKNOWN_PARAM" }]
+      }
     }
   ]
 }

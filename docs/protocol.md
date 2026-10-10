@@ -176,6 +176,42 @@ When `--readonly` is present:
 ### 4.3. Confirmation (`--confirm`, `--i-understand`)
 Operations marked as requiring confirmation fail with exit code `9` (`MISSING_CONFIRMATION`) unless `--confirm` is provided.
 
+### 4.4. Product Compatibility
+A published schema may declare an optional `product` metadata block defining compatibility requirements for the underlying system executable (e.g. `git`, `gh`, `aws`):
+```json
+{
+  "product": {
+    "name": "git",
+    "supported": ">=2.43.0 <3.0.0",
+    "detect": {
+      "argv": ["git", "--version"],
+      "pattern": "(\\d+\\.\\d+\\.\\d+)"
+    }
+  }
+}
+```
+The wrapper CLI (server) resolves `argv[0]` on the system `PATH` (using absolute PATH entries only), executes `detect.argv` once per process (cached), extracts the semver string matching the regular expression `pattern`, and validates that the extracted version satisfies the `supported` version conjunction range.
+
+If the product executable is not found on PATH or its version falls outside the `supported` range, the wrapper refuses all operation execution and exits with exit code `10` (`UNSUPPORTED_PRODUCT_VERSION`).
+The error envelope emitted to stdout is:
+```json
+{
+  "success": false,
+  "error": {
+    "code": "UNSUPPORTED_PRODUCT_VERSION",
+    "message": "Product \"git\" version 1.8.0 does not satisfy supported range \">=2.43.0 <3.0.0\"",
+    "data": {
+      "product": "git",
+      "found": "1.8.0",
+      "supported": ">=2.43.0 <3.0.0"
+    }
+  }
+}
+```
+When detection fails or the executable is missing on PATH, `found` is `null`.
+
+**Inspection Exemption**: Informational and inspection commands (`--schema`, `--list`, `--help`, `--explain`) are never blocked by product compatibility checks, allowing clients to inspect schemas offline and without the underlying tool installed.
+
 ---
 
 ## 5. Output Envelopes & Error Reporting
@@ -232,6 +268,7 @@ Implementations must map internal error classifications to standard exit codes:
 | `7` | `TIMEOUT` | Operation exceeded deadline or execution timeout |
 | `8` | `SERVICE_UNAVAILABLE`| Remote service, daemon, or network connection unavailable |
 | `9` | `MISSING_CONFIRMATION` | Dangerous operation attempted without `--confirm` or `--i-understand` |
+| `10` | `UNSUPPORTED_PRODUCT_VERSION` | Wrapper refuses all operations because the underlying product is missing or its version falls outside the supported range |
 | `127`| `COMMAND_NOT_FOUND` | Required external binary not found on system PATH |
 
 ---

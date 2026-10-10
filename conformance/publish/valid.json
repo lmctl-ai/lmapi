@@ -60,6 +60,35 @@
       "expect": {
         "ok": true
       }
+    },
+    {
+      "name": "valid published schema with product compatibility block",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mygit",
+        "version": "1.0.0",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags", "json"],
+        "product": {
+          "name": "git",
+          "supported": ">=2.43.0 <3.0.0",
+          "detect": {
+            "argv": ["git", "--version"],
+            "pattern": "(\\d+\\.\\d+\\.\\d+)"
+          }
+        },
+        "operations": [
+          {
+            "name": "status",
+            "access": "read",
+            "description": "Check git repository status",
+            "params": []
+          }
+        ]
+      },
+      "expect": {
+        "ok": true
+      }
     }
   ]
 }

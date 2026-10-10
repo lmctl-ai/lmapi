@@ -1,0 +1,157 @@
+{
+  "cases": [
+    {
+      "name": "spec with omitted channel defaults to latest",
+      "spec": "@lmctl-ai/lmgit",
+      "expect": {
+        "ok": true,
+        "owner": "lmctl-ai",
+        "repo": "lmgit",
+        "channel": "latest",
+        "key": "@lmctl-ai/lmgit#latest"
+      }
+    },
+    {
+      "name": "spec with explicit latest channel",
+      "spec": "@lmctl-ai/lmgit#latest",
+      "expect": {
+        "ok": true,
+        "owner": "lmctl-ai",
+        "repo": "lmgit",
+        "channel": "latest",
+        "key": "@lmctl-ai/lmgit#latest"
+      }
+    },
+    {
+      "name": "spec with explicit dev channel",
+      "spec": "@lmctl-ai/lmgit#dev",
+      "expect": {
+        "ok": true,
+        "owner": "lmctl-ai",
+        "repo": "lmgit",
+        "channel": "dev",
+        "key": "@lmctl-ai/lmgit#dev"
+      }
+    },
+    {
+      "name": "spec with semver tag is rejected as SPEC_CHANNEL",
+      "spec": "@lmctl-ai/lmgit#v1.0.0",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_CHANNEL"
+      }
+    },
+    {
+      "name": "spec with branch name is rejected as SPEC_CHANNEL",
+      "spec": "@lmctl-ai/lmgit#main",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_CHANNEL"
+      }
+    },
+    {
+      "name": "spec with commit SHA is rejected as SPEC_CHANNEL",
+      "spec": "@lmctl-ai/lmgit#e1613098921f45271c3b7bbcb40f92f6b10beaed",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_CHANNEL"
+      }
+    },
+    {
+      "name": "spec with empty channel is rejected as SPEC_CHANNEL",
+      "spec": "@lmctl-ai/lmgit#",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_CHANNEL"
+      }
+    },
+    {
+      "name": "spec with subpath channel is rejected as SPEC_CHANNEL",
+      "spec": "@lmctl-ai/lmgit#dev/sub",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_CHANNEL"
+      }
+    },
+    {
+      "name": "spec with traversal in channel is rejected as SPEC_CHANNEL",
+      "spec": "@lmctl-ai/lmgit#../../etc",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_CHANNEL"
+      }
+    },
+    {
+      "name": "spec missing at sign is rejected as SPEC_SYNTAX",
+      "spec": "lmctl-ai/lmgit",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec missing repo is rejected as SPEC_SYNTAX",
+      "spec": "@lmctl-ai",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec with empty repo is rejected as SPEC_SYNTAX",
+      "spec": "@lmctl-ai/",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec with empty owner is rejected as SPEC_SYNTAX",
+      "spec": "@/lmgit",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec with traversal owner is rejected as SPEC_SYNTAX",
+      "spec": "@../lmgit",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec with traversal repo is rejected as SPEC_SYNTAX",
+      "spec": "@lmctl-ai/..",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec with invalid character in owner is rejected as SPEC_SYNTAX",
+      "spec": "@bad$owner/repo",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "spec with invalid character in repo is rejected as SPEC_SYNTAX",
+      "spec": "@owner/repo$name",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    },
+    {
+      "name": "empty spec string is rejected as SPEC_SYNTAX",
+      "spec": "",
+      "expect": {
+        "ok": false,
+        "code": "SPEC_SYNTAX"
+      }
+    }
+  ]
+}
