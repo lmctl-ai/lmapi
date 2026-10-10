@@ -119,7 +119,7 @@ Cardinalities represent presence and multiplicity:
 
 ## 3. Input Forms & Transport
 
-Every declared operation accepts arguments through three interchangeable transport representations:
+Every declared operation accepts arguments through the transport representations listed in the document's `inputs` array (all three — `flags`, `json`, `graphql` — unless the tool publishes a subset; a client must use only the forms published, and a server must refuse an unpublished form with `FORM_NOT_ALLOWED`):
 
 ### 3.1. Command-Line Flags Form
 Arguments are passed as standard CLI arguments:
@@ -270,6 +270,16 @@ Implementations must map internal error classifications to standard exit codes:
 | `9` | `MISSING_CONFIRMATION` | Dangerous operation attempted without `--confirm` or `--i-understand` |
 | `10` | `UNSUPPORTED_PRODUCT_VERSION` | Wrapper refuses all operations because the underlying product is missing or its version falls outside the supported range |
 | `127`| `COMMAND_NOT_FOUND` | Required external binary not found on system PATH |
+
+### 6.1. Native tools (no wrapper)
+
+A tool that implements lmapi itself, rather than wrapping a foreign product, follows these additional rules:
+
+- **Legacy behaviour is untouched.** lmapi mode is entered only by lmapi-shaped argv (an lmapi root global such as `--schema`, `--input-json`, or a published operation name); every other invocation keeps the tool's own parser, output and exit codes.
+- **Domain statuses are results, not failures.** In lmapi mode a successful search that matched nothing, or a partial result, exits `0` with the status inside the result document. Exit codes above are reserved for the failure classes in the table, so a tool's own legacy exit codes (for example `1` = no match) never leak into lmapi mode.
+- **Tool-specific error codes** are preserved under `error.data` (for example `data.tool_code`) while `error.code` stays one of the standard codes.
+- **`product` is omitted**: the tool is its own product, and `tool.version` is its version.
+- **Globals** a tool already owns (for example `--format`) may be dropped from the published `globals`; the schema's `globals` array is authoritative.
 
 ---
 
