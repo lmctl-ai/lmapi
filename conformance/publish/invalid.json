@@ -360,6 +360,151 @@
         "ok": false,
         "issues": [{ "code": "UNKNOWN_PARAM" }]
       }
+    },
+    {
+      "name": "scalar param default outside its enum is TYPE_MISMATCH",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": {
+          "dryrun": true,
+          "readonly": true
+        },
+        "inputs": [
+          "flags",
+          "json"
+        ],
+        "operations": [
+          {
+            "name": "find",
+            "access": "read",
+            "description": "Find paths",
+            "params": [
+              {
+                "name": "mode",
+                "type": "string",
+                "occurs": "?",
+                "enum": [
+                  "fast",
+                  "slow"
+                ],
+                "default": "medium"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          {
+            "code": "TYPE_MISMATCH",
+            "param": "mode",
+            "op": "find"
+          }
+        ]
+      }
+    },
+    {
+      "name": "array param default with an item outside its enum is TYPE_MISMATCH (same code as the scalar case)",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": {
+          "dryrun": true,
+          "readonly": true
+        },
+        "inputs": [
+          "flags",
+          "json"
+        ],
+        "operations": [
+          {
+            "name": "find",
+            "access": "read",
+            "description": "Find paths",
+            "params": [
+              {
+                "name": "display",
+                "type": "string",
+                "occurs": "*",
+                "enum": [
+                  "name",
+                  "lastmod",
+                  "size",
+                  "type"
+                ],
+                "default": [
+                  "name",
+                  "owner"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          {
+            "code": "TYPE_MISMATCH",
+            "param": "display",
+            "op": "find"
+          }
+        ]
+      }
+    },
+    {
+      "name": "type array default with an item outside its enum is TYPE_MISMATCH",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": {
+          "dryrun": true,
+          "readonly": true
+        },
+        "inputs": [
+          "flags",
+          "json"
+        ],
+        "operations": [
+          {
+            "name": "find",
+            "access": "read",
+            "description": "Find paths",
+            "params": [
+              {
+                "name": "display",
+                "type": "array",
+                "items": "string",
+                "enum": [
+                  "name",
+                  "lastmod",
+                  "size",
+                  "type"
+                ],
+                "default": [
+                  "size",
+                  "color"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          {
+            "code": "TYPE_MISMATCH",
+            "param": "display",
+            "op": "find"
+          }
+        ]
+      }
     }
   ]
 }

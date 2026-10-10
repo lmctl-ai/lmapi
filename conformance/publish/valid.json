@@ -89,6 +89,136 @@
       "expect": {
         "ok": true
       }
+    },
+    {
+      "name": "array param (occurs *) with enum accepts an array default whose items are all in the enum",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": {
+          "dryrun": true,
+          "readonly": true
+        },
+        "inputs": [
+          "flags",
+          "json"
+        ],
+        "operations": [
+          {
+            "name": "find",
+            "access": "read",
+            "description": "Find paths",
+            "params": [
+              {
+                "name": "display",
+                "type": "string",
+                "occurs": "*",
+                "enum": [
+                  "name",
+                  "lastmod",
+                  "size",
+                  "type"
+                ],
+                "default": [
+                  "name",
+                  "lastmod",
+                  "size"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "name": "array param (occurs +) with enum accepts an array default whose items are all in the enum",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": {
+          "dryrun": true,
+          "readonly": true
+        },
+        "inputs": [
+          "flags",
+          "json"
+        ],
+        "operations": [
+          {
+            "name": "find",
+            "access": "read",
+            "description": "Find paths",
+            "params": [
+              {
+                "name": "display",
+                "type": "string",
+                "occurs": "+",
+                "enum": [
+                  "name",
+                  "lastmod",
+                  "size",
+                  "type"
+                ],
+                "default": [
+                  "size"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "name": "type array with items and enum accepts an array default whose items are all in the enum",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": {
+          "dryrun": true,
+          "readonly": true
+        },
+        "inputs": [
+          "flags",
+          "json"
+        ],
+        "operations": [
+          {
+            "name": "find",
+            "access": "read",
+            "description": "Find paths",
+            "params": [
+              {
+                "name": "display",
+                "type": "array",
+                "items": "string",
+                "occurs": "?",
+                "enum": [
+                  "name",
+                  "lastmod",
+                  "size",
+                  "type"
+                ],
+                "default": [
+                  "name",
+                  "type"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": true
+      }
     }
   ]
 }
