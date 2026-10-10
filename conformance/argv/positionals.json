@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "name": "positional argument and flag separation",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "repo", "type": "string", "positional": true, "occurs": "?" },
+          { "name": "message", "type": "string", "occurs": "?" }
+        ]
+      },
+      "argv": ["my-repo", "--message", "hello"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "repo": "my-repo",
+          "message": "hello"
+        },
+        "positionals": ["my-repo"],
+        "globals": {}
+      }
+    },
+    {
+      "name": "double dash separator treats subsequent tokens as positionals",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "paths", "type": "array", "items": "string", "positional": true, "occurs": "*" }
+        ]
+      },
+      "argv": ["--", "--not-a-flag", "file.txt"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "paths": ["--not-a-flag", "file.txt"]
+        },
+        "positionals": ["--not-a-flag", "file.txt"],
+        "globals": {}
+      }
+    }
+  ]
+}

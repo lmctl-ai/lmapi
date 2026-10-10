@@ -1,0 +1,231 @@
+{
+  "cases": [
+    {
+      "name": "tool named constructor is rejected as RESERVED_NAME",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "constructor",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "RESERVED_NAME" }]
+      }
+    },
+    {
+      "name": "operation named constructor is rejected as RESERVED_NAME",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          { "name": "constructor", "params": [] }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "RESERVED_NAME" }]
+      }
+    },
+    {
+      "name": "param named prototype is rejected as RESERVED_NAME",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "myop",
+            "params": [{ "name": "prototype", "type": "string" }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "RESERVED_NAME", "param": "prototype" }]
+      }
+    },
+    {
+      "name": "param alias named __proto__ is rejected as RESERVED_NAME",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "myop",
+            "params": [{ "name": "validParam", "type": "string", "aliases": ["__proto__"] }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "RESERVED_NAME", "param": "validParam" }]
+      }
+    },
+    {
+      "name": "global param named constructor is rejected as RESERVED_NAME",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "globals": [{ "name": "constructor", "type": "string" }],
+        "operations": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "RESERVED_NAME", "param": "constructor" }]
+      }
+    },
+    {
+      "name": "operation param named dryrun is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "commit",
+            "params": [{ "name": "dryrun", "type": "boolean" }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE", "param": "dryrun" }]
+      }
+    },
+    {
+      "name": "unknown param property min is rejected as UNKNOWN_PARAM",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "commit",
+            "params": [{ "name": "count", "type": "number", "min": 1 }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "UNKNOWN_PARAM", "param": "count" }]
+      }
+    },
+    {
+      "name": "unknown param property conflicts is rejected as UNKNOWN_PARAM",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "commit",
+            "params": [{ "name": "opt", "type": "string", "conflicts": ["other"] }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "UNKNOWN_PARAM", "param": "opt" }]
+      }
+    },
+    {
+      "name": "duplicate operation name is rejected as DOCUMENT_PARSE",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          { "name": "status", "params": [] },
+          { "name": "status", "params": [] }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "DOCUMENT_PARSE", "op": "status" }]
+      }
+    },
+    {
+      "name": "invalid param type is rejected as ENUM_VIOLATION",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "status",
+            "params": [{ "name": "path", "type": "filepath" }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "ENUM_VIOLATION", "param": "path" }]
+      }
+    },
+    {
+      "name": "invalid occurs cardinality is rejected as ENUM_VIOLATION",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          {
+            "name": "status",
+            "params": [{ "name": "path", "type": "string", "occurs": "many" }]
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "ENUM_VIOLATION", "param": "path" }]
+      }
+    },
+    {
+      "name": "invalid access level is rejected as ENUM_VIOLATION",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          { "name": "status", "access": "unsafe", "params": [] }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "ENUM_VIOLATION", "op": "status" }]
+      }
+    },
+    {
+      "name": "invalid returns type is rejected as ENUM_VIOLATION",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags"],
+        "operations": [
+          { "name": "status", "returns": "custom_class", "params": [] }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "ENUM_VIOLATION", "op": "status" }]
+      }
+    }
+  ]
+}

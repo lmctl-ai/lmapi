@@ -1,0 +1,76 @@
+{
+  "cases": [
+    {
+      "name": "valid git2 commit with message and boolean flag",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message \"initial commit\" --allow-empty",
+      "expect": {
+        "ok": true,
+        "tool": "git2",
+        "op": "commit",
+        "argv": ["git2", "commit", "--message", "initial commit", "--allow-empty"],
+        "params": {
+          "message": "initial commit",
+          "allowEmpty": true,
+          "path": "."
+        },
+        "positionals": [],
+        "globals": {},
+        "effect": "effectful"
+      }
+    },
+    {
+      "name": "valid git2 read operation status",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 status",
+      "expect": {
+        "ok": true,
+        "tool": "git2",
+        "op": "status",
+        "argv": ["git2", "status"],
+        "params": {
+          "path": "."
+        },
+        "positionals": [],
+        "globals": {},
+        "effect": "read"
+      }
+    },
+    {
+      "name": "valid git2 init with positional path and flags",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 init --path /tmp/new-repo --bare",
+      "expect": {
+        "ok": true,
+        "tool": "git2",
+        "op": "init",
+        "argv": ["git2", "init", "--path", "/tmp/new-repo", "--bare"],
+        "params": {
+          "path": "/tmp/new-repo",
+          "bare": true
+        },
+        "positionals": [],
+        "globals": {},
+        "effect": "effectful"
+      }
+    },
+    {
+      "name": "valid git2 commit with escaped space and quotes in value",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message 'fix: handle \"quotes\" and spaces'",
+      "expect": {
+        "ok": true,
+        "tool": "git2",
+        "op": "commit",
+        "argv": ["git2", "commit", "--message", "fix: handle \"quotes\" and spaces"],
+        "params": {
+          "message": "fix: handle \"quotes\" and spaces",
+          "path": "."
+        },
+        "positionals": [],
+        "globals": {},
+        "effect": "effectful"
+      }
+    }
+  ]
+}

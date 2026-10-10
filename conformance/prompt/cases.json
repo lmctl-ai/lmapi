@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "name": "git2 fixture describeForPrompt golden test",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "golden": "git2.prompt.txt"
+    },
+    {
+      "name": "gh2 fixture describeForPrompt golden test",
+      "schemas": "fixtures/gh2.cli.schema.v1.json",
+      "golden": "gh2.prompt.txt"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "cases": [
+    {
+      "name": "valid primitive types",
+      "schema": {
+        "name": "test_types",
+        "params": [
+          { "name": "str", "type": "string", "occurs": "?" },
+          { "name": "num", "type": "number", "occurs": "?" },
+          { "name": "bool", "type": "boolean", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "str": "hello",
+        "num": 42,
+        "bool": true
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "str": "hello",
+          "num": 42,
+          "bool": true
+        }
+      }
+    },
+    {
+      "name": "type mismatch on number and boolean",
+      "schema": {
+        "name": "two_bad",
+        "params": [
+          { "name": "count", "type": "number", "occurs": "?" },
+          { "name": "flag", "type": "boolean", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "count": "not-a-number",
+        "flag": "not-a-bool"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "TYPE_MISMATCH", "param": "count" },
+          { "code": "TYPE_MISMATCH", "param": "flag" }
+        ]
+      }
+    },
+    {
+      "name": "string coercion from number and boolean",
+      "schema": {
+        "name": "coercion",
+        "params": [
+          { "name": "numStr", "type": "string", "occurs": "?" },
+          { "name": "boolStr", "type": "string", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "numStr": 123,
+        "boolStr": false
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "numStr": "123",
+          "boolStr": "false"
+        }
+      }
+    },
+    {
+      "name": "valid json and object types",
+      "schema": {
+        "name": "complex_types",
+        "params": [
+          { "name": "cfg", "type": "object", "occurs": "?" },
+          { "name": "anyJson", "type": "json", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "cfg": { "enabled": true, "retries": 3 },
+        "anyJson": [1, "two", null]
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "cfg": { "enabled": true, "retries": 3 },
+          "anyJson": [1, "two", null]
+        }
+      }
+    }
+  ]
+}

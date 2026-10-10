@@ -1,0 +1,121 @@
+{
+  "cases": [
+    {
+      "name": "space in flag value",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "path", "type": "string", "occurs": "?" }
+        ]
+      },
+      "argv": ["--path", "/tmp/my repo"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "path": "/tmp/my repo"
+        },
+        "positionals": [],
+        "globals": {}
+      }
+    },
+    {
+      "name": "equals sign in flag value",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "message", "type": "string", "occurs": "?" }
+        ]
+      },
+      "argv": ["--message=a=b=c"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "message": "a=b=c"
+        },
+        "positionals": [],
+        "globals": {}
+      }
+    },
+    {
+      "name": "nested JSON object value",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "config", "type": "object", "occurs": "?" }
+        ]
+      },
+      "argv": ["--config", "{\"a\":{\"b\":1}}"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "config": { "a": { "b": 1 } }
+        },
+        "positionals": [],
+        "globals": {}
+      }
+    },
+    {
+      "name": "boolean flags with --no- prefix",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "wip", "type": "boolean", "occurs": "?" },
+          { "name": "cached", "type": "boolean", "occurs": "?" }
+        ]
+      },
+      "argv": ["--wip", "--no-cached"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "wip": true,
+          "cached": false
+        },
+        "positionals": [],
+        "globals": {}
+      }
+    },
+    {
+      "name": "repeated flags accumulation",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "tag", "type": "string", "occurs": "+" }
+        ]
+      },
+      "argv": ["--tag", "v1.0", "--tag", "v2.0"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "tag": ["v1.0", "v2.0"]
+        },
+        "positionals": [],
+        "globals": {}
+      }
+    },
+    {
+      "name": "globals extracted separately from params",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "message", "type": "string", "occurs": "?" }
+        ]
+      },
+      "globals": [
+        { "name": "dryrun", "type": "boolean", "occurs": "?", "aliases": ["dry-run"] },
+        { "name": "confirm", "type": "boolean", "occurs": "?" }
+      ],
+      "argv": ["--dry-run", "--message", "hello", "--confirm"],
+      "expect": {
+        "ok": true,
+        "params": {
+          "message": "hello"
+        },
+        "positionals": [],
+        "globals": {
+          "dryrun": true,
+          "confirm": true
+        }
+      }
+    }
+  ]
+}

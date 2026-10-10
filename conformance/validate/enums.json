@@ -1,0 +1,76 @@
+{
+  "cases": [
+    {
+      "name": "string enum allowed value",
+      "schema": {
+        "name": "str_enum_demo",
+        "params": [
+          { "name": "mode", "type": "string", "enum": ["fast", "safe", "strict"] }
+        ]
+      },
+      "input": {
+        "mode": "safe"
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "mode": "safe"
+        }
+      }
+    },
+    {
+      "name": "string enum disallowed value triggers ENUM_VIOLATION",
+      "schema": {
+        "name": "str_enum_demo",
+        "params": [
+          { "name": "mode", "type": "string", "enum": ["fast", "safe", "strict"] }
+        ]
+      },
+      "input": {
+        "mode": "invalid_mode"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "ENUM_VIOLATION", "param": "mode" }
+        ]
+      }
+    },
+    {
+      "name": "numeric enum allowed value",
+      "schema": {
+        "name": "num_enum_demo",
+        "params": [
+          { "name": "level", "type": "number", "enum": [1, 2, 3] }
+        ]
+      },
+      "input": {
+        "level": 2
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "level": 2
+        }
+      }
+    },
+    {
+      "name": "numeric enum disallowed value triggers ENUM_VIOLATION",
+      "schema": {
+        "name": "num_enum_demo",
+        "params": [
+          { "name": "level", "type": "number", "enum": [1, 2, 3] }
+        ]
+      },
+      "input": {
+        "level": 5
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "ENUM_VIOLATION", "param": "level" }
+        ]
+      }
+    }
+  ]
+}

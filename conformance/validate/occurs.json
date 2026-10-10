@@ -1,0 +1,88 @@
+{
+  "cases": [
+    {
+      "name": "required param missing",
+      "schema": {
+        "name": "req_demo",
+        "params": [
+          { "name": "target", "type": "string", "occurs": "1" }
+        ]
+      },
+      "input": {},
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "MISSING_REQUIRED", "param": "target" }
+        ]
+      }
+    },
+    {
+      "name": "plus occurs empty array triggers missing required",
+      "schema": {
+        "name": "plus_demo",
+        "params": [
+          { "name": "items", "type": "string", "occurs": "+" }
+        ]
+      },
+      "input": {
+        "items": []
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "MISSING_REQUIRED", "param": "items" }
+        ]
+      }
+    },
+    {
+      "name": "plus occurs with non-empty array succeeds",
+      "schema": {
+        "name": "plus_valid",
+        "params": [
+          { "name": "items", "type": "string", "occurs": "+" }
+        ]
+      },
+      "input": {
+        "items": ["a", "b"]
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "items": ["a", "b"]
+        }
+      }
+    },
+    {
+      "name": "star occurs accepts empty array",
+      "schema": {
+        "name": "star_demo",
+        "params": [
+          { "name": "tags", "type": "string", "occurs": "*" }
+        ]
+      },
+      "input": {
+        "tags": []
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "tags": []
+        }
+      }
+    },
+    {
+      "name": "optional question occurs omitted succeeds",
+      "schema": {
+        "name": "optional_demo",
+        "params": [
+          { "name": "opt", "type": "string", "occurs": "?" }
+        ]
+      },
+      "input": {},
+      "expect": {
+        "ok": true,
+        "params": {}
+      }
+    }
+  ]
+}

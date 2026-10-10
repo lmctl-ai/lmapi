@@ -1,0 +1,17 @@
+{
+  "name": "@lmctl-ai/lmapi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check-schema": "node scripts/check-schema.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmctl-ai/lmapi.git"
+  }
+}

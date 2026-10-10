@@ -1,0 +1,34 @@
+# gh2
+gh2 close_issue --issue-number <number> --owner <string> --repo <string> (effectful) — Close an issue
+gh2 close_pull_request --owner <string> --pr-number <number> --repo <string> (effectful) — Close a pull request
+gh2 comment_on_issue --body <string> --issue-number <number> --owner <string> --repo <string> (effectful) — Add a comment to an issue
+gh2 comment_on_pull_request --body <string> --owner <string> --pr-number <number> --repo <string> (effectful) — Comment on a pull request
+gh2 create_branch --branch-name <string> [--from-branch <string>] --owner <string> --repo <string> (effectful) — Create a branch from another branch
+gh2 create_issue [--body <string>] --owner <string> --repo <string> --title <string> (effectful) — Create an issue
+gh2 create_pull_request --base <string> [--body <string>] --head <string> --owner <string> --repo <string> --title <string> (effectful) — Create a pull request
+gh2 create_release [--draft] [--notes <string>] --owner <string> [--prerelease] --repo <string> --tag <string> [--title <string>] (effectful) — Create a release
+gh2 create_repository [--description <string>] --owner <string> [--private] --repo <string> (effectful) — Create a repository (org or @me)
+gh2 edit_issue [--body <string>] --issue-number <number> --owner <string> --repo <string> [--title <string>] (effectful) — Edit issue title/body
+gh2 get_commit_history [--limit <number>] --owner <string> --repo <string> (read) — Commit history for a repository
+gh2 get_file_contents [--branch <string>] --owner <string> --path <string> --repo <string> (read) — Fetch file contents (base64-decoded)
+gh2 get_issue --issue-number <number> --owner <string> --repo <string> (read) — Get issue details
+gh2 get_me (read) — Get authenticated user details
+gh2 get_pull_request --owner <string> --pr-number <number> --repo <string> (read) — Get pull request details
+gh2 get_release --owner <string> --repo <string> --tag <string> (read) — Get release details
+gh2 get_repository --owner <string> --repo <string> (read) — Detailed repository information
+gh2 get_workflow_run --owner <string> --repo <string> --run-id <number> (read) — Get workflow run details
+gh2 list_branches --owner <string> --repo <string> (read) — List branches in a repository
+gh2 list_issues --owner <string> --repo <string> [--state <open|closed|all>] (read) — List issues in a repository
+gh2 list_pull_requests --owner <string> --repo <string> [--state <open|closed|all|merged|draft>] (read) — List pull requests
+gh2 list_releases --owner <string> --repo <string> (read) — List releases
+gh2 list_repositories [--visibility <all|public|private>] (read) — List repositories for the authenticated user
+gh2 list_workflow_runs --owner <string> --repo <string> [--status <string>] [--workflow-id <string>] (read) — List workflow runs
+gh2 list_workflows --owner <string> --repo <string> (read) — List workflows in a repository
+gh2 merge_pull_request [--merge-method <merge|squash|rebase>] --owner <string> --pr-number <number> --repo <string> (effectful) — Merge a pull request
+gh2 pr_triage [--compact] [--since <last-author-comment|all>] --url <string> (read) — Triage a GitHub PR: normalize its URL, fetch status/checks/reviews via gh, emit evidence
+gh2 search_repositories [--limit <number>] --query <string> (read) — Search repositories on GitHub
+
+Rules:
+1. One simple command: execute exactly one command line starting with the tool name; do not chain commands.
+2. Quote values with spaces: wrap parameter values containing spaces or special characters in quotes.
+3. No shell operators: operators, pipes, redirects, subshells, backticks, globs, and env prefixes are refused.

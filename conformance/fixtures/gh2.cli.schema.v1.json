@@ -1,0 +1,817 @@
+{
+  "schema": "cli.schema.v1",
+  "tool": "gh2",
+  "version": "0.1.0",
+  "policy": {
+    "dryrun": true,
+    "readonly": true
+  },
+  "inputs": [
+    "flags",
+    "json",
+    "graphql"
+  ],
+  "operations": [
+    {
+      "name": "get_commit_history",
+      "access": "read",
+      "description": "Commit history for a repository",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "occurs": "?",
+          "default": 30,
+          "description": "Max commits (default 30)"
+        }
+      ]
+    },
+    {
+      "name": "list_repositories",
+      "access": "read",
+      "description": "List repositories for the authenticated user",
+      "params": [
+        {
+          "name": "visibility",
+          "type": "string",
+          "occurs": "?",
+          "enum": [
+            "all",
+            "public",
+            "private"
+          ],
+          "description": "Filter by visibility (all|public|private)"
+        }
+      ]
+    },
+    {
+      "name": "search_repositories",
+      "access": "read",
+      "description": "Search repositories on GitHub",
+      "params": [
+        {
+          "name": "query",
+          "type": "string",
+          "description": "Search query"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "occurs": "?",
+          "default": 10,
+          "description": "Max results (default 10)"
+        }
+      ]
+    },
+    {
+      "name": "get_repository",
+      "access": "read",
+      "description": "Detailed repository information",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        }
+      ]
+    },
+    {
+      "name": "create_repository",
+      "access": "write",
+      "description": "Create a repository (org or @me)",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Org name, or '@me' for the authenticated user"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "private",
+          "type": "boolean",
+          "occurs": "?",
+          "default": true,
+          "description": "Private repository (default true)"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "occurs": "?",
+          "description": "Repository description"
+        }
+      ]
+    },
+    {
+      "name": "list_branches",
+      "access": "read",
+      "description": "List branches in a repository",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        }
+      ]
+    },
+    {
+      "name": "create_branch",
+      "access": "write",
+      "description": "Create a branch from another branch",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "branchName",
+          "type": "string",
+          "description": "New branch name"
+        },
+        {
+          "name": "fromBranch",
+          "type": "string",
+          "occurs": "?",
+          "default": "main",
+          "description": "Source branch (default: main)"
+        }
+      ]
+    },
+    {
+      "name": "get_file_contents",
+      "access": "read",
+      "description": "Fetch file contents (base64-decoded)",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "description": "File path in repo"
+        },
+        {
+          "name": "branch",
+          "type": "string",
+          "occurs": "?",
+          "description": "Branch/ref (optional)"
+        }
+      ]
+    },
+    {
+      "name": "list_issues",
+      "access": "read",
+      "description": "List issues in a repository",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "occurs": "?",
+          "enum": [
+            "open",
+            "closed",
+            "all"
+          ],
+          "default": "open",
+          "description": "Filter by state (open|closed|all)"
+        }
+      ]
+    },
+    {
+      "name": "get_issue",
+      "access": "read",
+      "description": "Get issue details",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "issueNumber",
+          "type": "number",
+          "description": "Issue number"
+        }
+      ]
+    },
+    {
+      "name": "create_issue",
+      "access": "write",
+      "description": "Create an issue",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Issue title"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "occurs": "?",
+          "description": "Issue body"
+        }
+      ]
+    },
+    {
+      "name": "close_issue",
+      "access": "write",
+      "description": "Close an issue",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "issueNumber",
+          "type": "number",
+          "description": "Issue number"
+        }
+      ]
+    },
+    {
+      "name": "comment_on_issue",
+      "access": "write",
+      "description": "Add a comment to an issue",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "issueNumber",
+          "type": "number",
+          "description": "Issue number"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "description": "Comment body"
+        }
+      ]
+    },
+    {
+      "name": "edit_issue",
+      "access": "write",
+      "description": "Edit issue title/body",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "issueNumber",
+          "type": "number",
+          "description": "Issue number"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "occurs": "?",
+          "description": "New title"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "occurs": "?",
+          "description": "New body"
+        }
+      ]
+    },
+    {
+      "name": "list_pull_requests",
+      "access": "read",
+      "description": "List pull requests",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "occurs": "?",
+          "enum": [
+            "open",
+            "closed",
+            "all",
+            "merged",
+            "draft"
+          ],
+          "default": "open",
+          "description": "Filter by state"
+        }
+      ]
+    },
+    {
+      "name": "get_pull_request",
+      "access": "read",
+      "description": "Get pull request details",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "prNumber",
+          "type": "number",
+          "description": "PR number"
+        }
+      ]
+    },
+    {
+      "name": "create_pull_request",
+      "access": "write",
+      "description": "Create a pull request",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "PR title"
+        },
+        {
+          "name": "head",
+          "type": "string",
+          "description": "Head branch"
+        },
+        {
+          "name": "base",
+          "type": "string",
+          "description": "Base branch"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "occurs": "?",
+          "description": "PR body"
+        }
+      ]
+    },
+    {
+      "name": "merge_pull_request",
+      "access": "write",
+      "description": "Merge a pull request",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "prNumber",
+          "type": "number",
+          "description": "PR number"
+        },
+        {
+          "name": "mergeMethod",
+          "type": "string",
+          "occurs": "?",
+          "enum": [
+            "merge",
+            "squash",
+            "rebase"
+          ],
+          "description": "Merge method (merge|squash|rebase)"
+        }
+      ]
+    },
+    {
+      "name": "close_pull_request",
+      "access": "write",
+      "description": "Close a pull request",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "prNumber",
+          "type": "number",
+          "description": "PR number"
+        }
+      ]
+    },
+    {
+      "name": "comment_on_pull_request",
+      "access": "write",
+      "description": "Comment on a pull request",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "prNumber",
+          "type": "number",
+          "description": "PR number"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "description": "Comment body"
+        }
+      ]
+    },
+    {
+      "name": "list_workflows",
+      "access": "read",
+      "description": "List workflows in a repository",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        }
+      ]
+    },
+    {
+      "name": "list_workflow_runs",
+      "access": "read",
+      "description": "List workflow runs",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "workflowId",
+          "type": "string",
+          "occurs": "?",
+          "description": "Filter by workflow"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "occurs": "?",
+          "description": "Filter by status"
+        }
+      ]
+    },
+    {
+      "name": "get_workflow_run",
+      "access": "read",
+      "description": "Get workflow run details",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "runId",
+          "type": "number",
+          "description": "Workflow run ID"
+        }
+      ]
+    },
+    {
+      "name": "list_releases",
+      "access": "read",
+      "description": "List releases",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        }
+      ]
+    },
+    {
+      "name": "get_release",
+      "access": "read",
+      "description": "Get release details",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "tag",
+          "type": "string",
+          "description": "Release tag"
+        }
+      ]
+    },
+    {
+      "name": "create_release",
+      "access": "write",
+      "description": "Create a release",
+      "params": [
+        {
+          "name": "owner",
+          "type": "string",
+          "description": "Repository owner"
+        },
+        {
+          "name": "repo",
+          "type": "string",
+          "description": "Repository name"
+        },
+        {
+          "name": "tag",
+          "type": "string",
+          "description": "Release tag"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "occurs": "?",
+          "description": "Release title"
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "occurs": "?",
+          "description": "Release notes"
+        },
+        {
+          "name": "draft",
+          "type": "boolean",
+          "occurs": "?",
+          "description": "Create as draft"
+        },
+        {
+          "name": "prerelease",
+          "type": "boolean",
+          "occurs": "?",
+          "description": "Mark as prerelease"
+        }
+      ]
+    },
+    {
+      "name": "get_me",
+      "access": "read",
+      "description": "Get authenticated user details",
+      "params": []
+    },
+    {
+      "name": "pr_triage",
+      "access": "read",
+      "description": "Triage a GitHub PR: normalize its URL, fetch status/checks/reviews via gh, emit evidence",
+      "params": [
+        {
+          "name": "url",
+          "type": "string",
+          "description": "Full GitHub PR URL: https://github.com/<owner>/<repo>/pull/<number>"
+        },
+        {
+          "name": "since",
+          "type": "string",
+          "occurs": "?",
+          "enum": [
+            "last-author-comment",
+            "all"
+          ],
+          "default": "last-author-comment",
+          "description": "Evidence window"
+        },
+        {
+          "name": "compact",
+          "type": "boolean",
+          "occurs": "?",
+          "default": false,
+          "description": "Truncate evidence excerpts to 80 chars"
+        }
+      ]
+    }
+  ],
+  "globals": [
+    {
+      "name": "dryrun",
+      "type": "boolean",
+      "occurs": "?",
+      "aliases": [
+        "dry-run"
+      ],
+      "description": "Simulate write operations"
+    },
+    {
+      "name": "readonly",
+      "type": "boolean",
+      "occurs": "?",
+      "aliases": [
+        "read-only"
+      ],
+      "description": "Refuse to run write operations"
+    },
+    {
+      "name": "confirm",
+      "type": "boolean",
+      "occurs": "?",
+      "aliases": [
+        "i-understand"
+      ],
+      "description": "Confirm dangerous operations"
+    },
+    {
+      "name": "json",
+      "type": "boolean",
+      "occurs": "?",
+      "description": "Output as JSON"
+    },
+    {
+      "name": "help",
+      "type": "boolean",
+      "occurs": "?",
+      "aliases": [
+        "h"
+      ],
+      "description": "Show help"
+    },
+    {
+      "name": "list",
+      "type": "boolean",
+      "occurs": "?",
+      "description": "List operations as JSON"
+    },
+    {
+      "name": "schema",
+      "type": "boolean",
+      "occurs": "?",
+      "description": "Print schema document"
+    },
+    {
+      "name": "explain",
+      "type": "string",
+      "occurs": "?",
+      "description": "Explain an operation"
+    },
+    {
+      "name": "format",
+      "type": "string",
+      "occurs": "?",
+      "description": "Format for explain (text or json)"
+    },
+    {
+      "name": "input-json",
+      "type": "string",
+      "occurs": "?",
+      "aliases": [
+        "inputJson"
+      ],
+      "description": "JSON document input"
+    },
+    {
+      "name": "input-graphql",
+      "type": "string",
+      "occurs": "?",
+      "aliases": [
+        "inputGraphql"
+      ],
+      "description": "GraphQL document input"
+    },
+    {
+      "name": "input-file",
+      "type": "string",
+      "occurs": "?",
+      "aliases": [
+        "inputFile"
+      ],
+      "description": "Path to file containing JSON document input"
+    }
+  ]
+}

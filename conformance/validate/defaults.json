@@ -1,0 +1,40 @@
+{
+  "cases": [
+    {
+      "name": "default applied when parameter omitted",
+      "schema": {
+        "name": "default_demo",
+        "params": [
+          { "name": "count", "type": "number", "occurs": "?", "default": 10 },
+          { "name": "prefix", "type": "string", "occurs": "?", "default": "v_" }
+        ]
+      },
+      "input": {},
+      "expect": {
+        "ok": true,
+        "params": {
+          "count": 10,
+          "prefix": "v_"
+        }
+      }
+    },
+    {
+      "name": "explicit value overrides default",
+      "schema": {
+        "name": "override_demo",
+        "params": [
+          { "name": "count", "type": "number", "occurs": "?", "default": 10 }
+        ]
+      },
+      "input": {
+        "count": 42
+      },
+      "expect": {
+        "ok": true,
+        "params": {
+          "count": 42
+        }
+      }
+    }
+  ]
+}

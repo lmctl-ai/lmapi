@@ -1,0 +1,274 @@
+{
+  "cases": [
+    {
+      "name": "semicolon command chaining",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status; rm -rf /",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "ampersand backgrounding",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status &",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "double ampersand logical AND",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status && curl x",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "pipe command chaining",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status | sh",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "double pipe logical OR",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status || echo fail",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "command substitution with dollar parens",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status $(id)",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "unquoted environment variable expansion",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status $HOME",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "command substitution with backticks",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status `id`",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "stdout redirection",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status > /etc/passwd",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "stdout append redirection",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status >> out.txt",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "stdin redirection",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status < /dev/null",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "heredoc redirection",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status << EOF",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "subshell parentheses",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 (subshell)",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "brace group",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 { echo hi; }",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "leading environment variable assignment",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "FOO=1 git2 lm_status",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "newline in command line",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status\nrm x",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "carriage return in command line",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status\rrm x",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "NUL byte in command line",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status\u0000rm x",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "unquoted glob asterisk",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_diff *.ts",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "unquoted glob question mark",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_diff file?.ts",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "unquoted glob square bracket",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_diff file[0-9].ts",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "word starting with unquoted tilde",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_log ~",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "word starting with unquoted tilde path",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_log ~/foo",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "shell comment at word start",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 lm_status # a comment",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "shell comment at line start",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "# just a comment",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "unterminated single quote",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message 'unterminated",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "unterminated double quote",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message \"unterminated",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "variable expansion inside double quotes",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message \"$FOO\"",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "command substitution inside double quotes",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message \"$(whoami)\"",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    },
+    {
+      "name": "backtick substitution inside double quotes",
+      "schemas": "fixtures/git2.cli.schema.v1.json",
+      "line": "git2 commit --message \"`whoami`\"",
+      "expect": {
+        "ok": false,
+        "issues": [{ "code": "SHELL_SYNTAX" }]
+      }
+    }
+  ]
+}

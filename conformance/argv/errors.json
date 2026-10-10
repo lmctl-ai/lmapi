@@ -1,0 +1,100 @@
+{
+  "cases": [
+    {
+      "name": "invalid number token triggers TYPE_MISMATCH",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "limit", "type": "number", "occurs": "?" }
+        ]
+      },
+      "argv": ["--limit", "not-a-number"],
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "TYPE_MISMATCH", "param": "limit" }
+        ]
+      }
+    },
+    {
+      "name": "invalid boolean value triggers TYPE_MISMATCH",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "wip", "type": "boolean", "occurs": "?" }
+        ]
+      },
+      "argv": ["--wip=not-a-boolean"],
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "TYPE_MISMATCH", "param": "wip" }
+        ]
+      }
+    },
+    {
+      "name": "malformed JSON string triggers TYPE_MISMATCH",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "config", "type": "object", "occurs": "?" }
+        ]
+      },
+      "argv": ["--config", "{\"broken\":"],
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "TYPE_MISMATCH", "param": "config" }
+        ]
+      }
+    },
+    {
+      "name": "duplicate flag for single-value parameter triggers DUPLICATE_FLAG",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "rev", "type": "string", "occurs": "?" }
+        ]
+      },
+      "argv": ["--rev", "v1.0", "--rev", "v2.0"],
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "DUPLICATE_FLAG", "param": "rev" }
+        ]
+      }
+    },
+    {
+      "name": "unknown flag triggers UNKNOWN_PARAM with suggestion",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "message", "type": "string", "occurs": "?" }
+        ]
+      },
+      "argv": ["--mesage", "hello"],
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "UNKNOWN_PARAM", "param": "mesage", "suggestion": "--message" }
+        ]
+      }
+    },
+    {
+      "name": "extra positional argument triggers EXTRA_POSITIONAL",
+      "schema": {
+        "name": "commit",
+        "params": [
+          { "name": "repo", "type": "string", "positional": true, "occurs": "?" }
+        ]
+      },
+      "argv": ["repo1", "unexpected_second_repo"],
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "EXTRA_POSITIONAL" }
+        ]
+      }
+    }
+  ]
+}

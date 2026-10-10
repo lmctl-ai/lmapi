@@ -1,0 +1,59 @@
+{
+  "cases": [
+    {
+      "name": "unknown param provides suggestion within distance 2",
+      "schema": {
+        "name": "suggest_demo",
+        "params": [
+          { "name": "path", "type": "string", "occurs": "?" },
+          { "name": "verbose", "type": "boolean", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "pth": "/tmp"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "UNKNOWN_PARAM", "param": "pth", "suggestion": "path" }
+        ]
+      }
+    },
+    {
+      "name": "unknown param without suggestion when distance greater than 2",
+      "schema": {
+        "name": "no_suggest_demo",
+        "params": [
+          { "name": "path", "type": "string", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "completely_unrelated": "val"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "UNKNOWN_PARAM", "param": "completely_unrelated" }
+        ]
+      }
+    },
+    {
+      "name": "reserved param name is rejected",
+      "schema": {
+        "name": "proto_demo",
+        "params": [
+          { "name": "path", "type": "string", "occurs": "?" }
+        ]
+      },
+      "input": {
+        "__proto__": { "polluted": true }
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "UNKNOWN_PARAM" }
+        ]
+      }
+    }
+  ]
+}

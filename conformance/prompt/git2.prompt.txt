@@ -1,0 +1,58 @@
+# git2
+git2 add [--all] [--force] [--path <string>] [--paths <string>...] [--update] (effectful) — Stage files
+git2 blame [--end-line <number>] --file <string> [--ignore-whitespace] [--path <string>] [--start-line <number>] (read) — Blame a file
+git2 branch_create --branch-name <string> [--force] [--path <string>] [--start-point <string>] (effectful) — Create a branch
+git2 branch_current [--path <string>] (read) — Show current branch
+git2 branch_delete --branch-name <string> [--force] [--path <string>] (effectful) — Delete a branch
+git2 branch_list [--all] [--limit <number>] [--merged] [--no-merged] [--path <string>] [--remote] (read) — List branches
+git2 branch_rename --branch-name <string> [--force] --new-branch-name <string> [--path <string>] (effectful) — Rename a branch
+git2 checkout <target> [--create-branch] [--force] [--path <string>] [--paths <string>...] [--track] (effectful) — Checkout a branch/commit/paths
+git2 cherry_pick --commits <string>... [--mainline <number>] [--no-commit] [--path <string>] [--signoff] [--strategy <string>] (effectful) — Apply commits on top
+git2 clean [--directories] [--dry-run] [--force] [--ignored] [--path <string>] (effectful) — Remove untracked files / directories
+git2 clone [--bare] [--branch <string>] [--depth <number>] --local-path <string> [--mirror] --remote-url <string> (effectful) — Clone a remote repository
+git2 commit [--allow-empty] [--amend] [--author <object>] --message <string> [--no-verify] [--path <string>] (effectful) — Create a commit
+git2 diff [--commit1 <string>] [--commit2 <string>] [--exclude-patterns <string>...] [--include-untracked] [--name-only] [--path <string>] [--paths <string>...] [--staged] [--stat] [--unified <number>] (read) — Show diffs
+git2 fetch [--depth <number>] [--path <string>] [--prune] [--remote <string>] [--tags] (effectful) — Fetch from a remote
+git2 init [--bare] [--initial-branch <string>] [--path <string>] (effectful) — Initialize a new git repository
+git2 lm_blame --file <string> [--path <string>] [--revision <string>] (read) — Per-line blame with author metadata
+git2 lm_branch [--all] [--path <string>] (read) — Branches with upstream and ahead/behind
+git2 lm_diff [--from <string>] [--path <string>] [--paths <string>...] [--staged] [--to <string>] (read) — Structured unified diff with hunks and byte-preserving content
+git2 lm_log [--max-count <number>] [--path <string>] [--revision <string>] (read) — Structured commit log with author/committer metadata
+git2 lm_ls_files [--path <string>] [--paths <string>...] (read) — List index entries with mode/stage
+git2 lm_remote [--path <string>] (read) — Remotes with credentials redacted from URLs
+git2 lm_rev_parse [--path <string>] [--revision <string>] (read) — Resolve a revision and peel to commit
+git2 lm_show [--file <string>] [--path <string>] [--revision <string>] (read) — Show a commit with metadata, or a file from its tree
+git2 lm_status [--ignored] [--path <string>] (read) — Structured git status (porcelain v1, byte-preserving paths)
+git2 log [--author <string>] [--branch <string>] [--file <string>] [--follow] [--grep <string>] [--max-count <number>] [--path <string>] [--since <string>] [--skip <number>] [--until <string>] (read) — Commit history
+git2 merge [--abort] --branch <string> [--message <string>] [--no-fast-forward] [--path <string>] [--squash] [--strategy <string>] (effectful) — Merge a branch
+git2 pull [--branch <string>] [--ff-only] [--path <string>] [--rebase] [--remote <string>] (effectful) — Pull from a remote
+git2 push [--branch <string>] [--delete] [--dry-run] [--force] [--force-with-lease] [--path <string>] [--remote <string>] [--set-upstream] [--tags] (effectful) — Push to a remote
+git2 rebase [--abort] --branch <string> [--continue-op] [--interactive] [--onto <string>] [--path <string>] [--preserve-merges] (effectful) — Rebase current branch
+git2 reflog [--max-count <number>] [--path <string>] [--ref <string>] (read) — Show reflog
+git2 remote_add --name <string> [--path <string>] --url <string> (effectful) — Add a remote
+git2 remote_get_url --name <string> [--path <string>] (read) — Get remote URL
+git2 remote_list [--path <string>] (read) — List remotes
+git2 remote_remove --name <string> [--path <string>] (effectful) — Remove a remote
+git2 remote_set_url --name <string> [--path <string>] [--push] --url <string> (effectful) — Set remote URL
+git2 reset [--commit <string>] [--mode <soft|mixed|hard|merge|keep>] [--path <string>] [--paths <string>...] (effectful) — Reset HEAD / unstage paths
+git2 show [--file-path <string>] [--format <string>] --object <string> [--path <string>] [--stat] (read) — Show a git object (commit, tree, blob, tag)
+git2 stash_apply [--path <string>] (effectful) — Apply a stash
+git2 stash_clear [--path <string>] (effectful) — Clear all stashes
+git2 stash_drop [--path <string>] [--stash-ref <string>] (effectful) — Drop a stash
+git2 stash_list [--limit <number>] [--path <string>] (read) — List stashes
+git2 stash_pop [--path <string>] (effectful) — Pop a stash
+git2 stash_push [--include-untracked] [--keep-index] [--message <string>] [--path <string>] (effectful) — Stash changes
+git2 status [--ignore-submodules] [--include-untracked] [--path <string>] (read) — Show working tree status
+git2 tag_create [--annotated] [--commit <string>] [--force] [--message <string>] [--path <string>] --tag-name <string> (effectful) — Create a tag
+git2 tag_delete [--path <string>] --tag-name <string> (effectful) — Delete a tag
+git2 tag_list [--limit <number>] [--path <string>] (read) — List tags
+git2 tag_verify [--path <string>] --tag-name <string> (read) — Verify a tag
+git2 worktree_add [--branch <string>] [--commitish <string>] [--detach] [--force] --path <string> [--repo <string>] (effectful) — Add a worktree
+git2 worktree_list [--repo <string>] (read) — List worktrees
+git2 worktree_prune [--dry-run] [--repo <string>] [--verbose] (effectful) — Prune stale worktrees
+git2 worktree_remove [--force] --path <string> [--repo <string>] (effectful) — Remove a worktree
+
+Rules:
+1. One simple command: execute exactly one command line starting with the tool name; do not chain commands.
+2. Quote values with spaces: wrap parameter values containing spaces or special characters in quotes.
+3. No shell operators: operators, pipes, redirects, subshells, backticks, globs, and env prefixes are refused.

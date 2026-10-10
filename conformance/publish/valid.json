@@ -1,0 +1,65 @@
+{
+  "cases": [
+    {
+      "name": "valid published schema with missing access allowed",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "1.0.0",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags", "json", "graphql"],
+        "operations": [
+          {
+            "name": "unspecified_access_op",
+            "description": "Operation without access declaration is allowed",
+            "params": [
+              { "name": "path", "type": "string", "occurs": "?" }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": true
+      }
+    },
+    {
+      "name": "valid published schema with full fields and kebab-case globals",
+      "document": {
+        "schema": "cli.schema.v1",
+        "tool": "mytool",
+        "version": "2.1.0",
+        "policy": { "dryrun": true, "readonly": true },
+        "inputs": ["flags", "json", "graphql"],
+        "globals": [
+          { "name": "dry-run", "type": "boolean", "occurs": "?", "aliases": ["dryrun"] },
+          { "name": "read-only", "type": "boolean", "occurs": "?" }
+        ],
+        "operations": [
+          {
+            "name": "inspect",
+            "access": "read",
+            "returns": "object",
+            "description": "Inspect resource",
+            "params": [
+              { "name": "id", "type": "string", "occurs": "1", "positional": true },
+              { "name": "verbose", "type": "boolean", "occurs": "?", "default": false },
+              { "name": "format", "type": "string", "occurs": "?", "enum": ["text", "json"] }
+            ]
+          },
+          {
+            "name": "deploy",
+            "access": "write",
+            "returns": "object",
+            "description": "Deploy resource",
+            "params": [
+              { "name": "env", "type": "string", "occurs": "1" }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "ok": true
+      }
+    }
+  ]
+}

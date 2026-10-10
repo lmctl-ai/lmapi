@@ -1,0 +1,80 @@
+{
+  "cases": [
+    {
+      "name": "doc-only param in flags form triggers FORM_NOT_ALLOWED",
+      "schema": {
+        "name": "forms_demo",
+        "params": [
+          { "name": "docField", "type": "string", "docOnly": true }
+        ]
+      },
+      "form": "flags",
+      "input": {
+        "docField": "some-text"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "FORM_NOT_ALLOWED", "param": "docField" }
+        ]
+      }
+    },
+    {
+      "name": "cli-only param in json form triggers FORM_NOT_ALLOWED",
+      "schema": {
+        "name": "forms_demo",
+        "params": [
+          { "name": "cliField", "type": "string", "cliOnly": true }
+        ]
+      },
+      "form": "json",
+      "input": {
+        "cliField": "some-text"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "FORM_NOT_ALLOWED", "param": "cliField" }
+        ]
+      }
+    },
+    {
+      "name": "json form rejects -- prefixed keys as UNKNOWN_PARAM",
+      "schema": {
+        "name": "json_form_demo",
+        "params": [
+          { "name": "path", "type": "string", "occurs": "?" }
+        ]
+      },
+      "form": "json",
+      "input": {
+        "--path": "/tmp"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "UNKNOWN_PARAM", "param": "--path" }
+        ]
+      }
+    },
+    {
+      "name": "graphql form rejects -- prefixed keys as UNKNOWN_PARAM",
+      "schema": {
+        "name": "graphql_form_demo",
+        "params": [
+          { "name": "path", "type": "string", "occurs": "?" }
+        ]
+      },
+      "form": "graphql",
+      "input": {
+        "--path": "/tmp"
+      },
+      "expect": {
+        "ok": false,
+        "issues": [
+          { "code": "UNKNOWN_PARAM", "param": "--path" }
+        ]
+      }
+    }
+  ]
+}
