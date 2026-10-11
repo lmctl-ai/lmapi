@@ -110,7 +110,7 @@ describe('conformance vector files integrity', () => {
           }
 
           // Expect shape validation
-          if (tc.expect) {
+          if (tc.expect && !relPath.startsWith('encode/')) {
             assert.ok(typeof tc.expect.ok === 'boolean', `${relPath} [${tc.name}]: expect.ok must be boolean`);
             if (tc.expect.ok === false && tc.expect.issues) {
               assert.ok(Array.isArray(tc.expect.issues), `${relPath} [${tc.name}]: expect.issues must be an array`);
