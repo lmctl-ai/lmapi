@@ -105,3 +105,23 @@ Tests deterministic LLM prompt text rendering (`describeForPrompt`):
 ### 6. `fixtures/`
 Shared schema fixtures used by multi-tool and interpreter test vectors.
 - `git2.cli.schema.v1.json`: The complete published schema fixture for the `git2` tool.
+
+### 7. `encode/*.json`
+Tests the client-side argv encoder (`encodeArgv` / `encode_argv`), the inverse of the flags form:
+```json
+{
+  "name": "case description",
+  "schema": { "name": "op", "params": [ ... ] },
+  "params": { "key": "value" },
+  "options": { "positional": true },
+  "expect": { "argv": ["--flag=value", "--", "first", "second"] }
+}
+```
+- Tokens **after** `--` are compared exactly: positional params are emitted in the order they are
+  declared in the schema, never in the order of the params object's keys (`{"path", "symbol"}` with
+  schema order `symbol, path` encodes as `-- <symbol> <path>`). A variadic last positional expands in
+  place.
+- Tokens **before** `--` (named flags) are compared as a multiset: their order follows the params
+  object, whose key order is implementation-defined (insertion order in TypeScript, sorted keys in
+  Rust without `preserve_order`).
+- Round trip: resolving `expect.argv` against `schema` with the flags form must give back `params`.

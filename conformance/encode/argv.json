@@ -1,0 +1,98 @@
+{
+  "cases": [
+    {
+      "name": "positionals follow schema order when params keys are in reverse order",
+      "schema": {
+        "name": "impact",
+        "params": [
+          { "name": "symbol", "type": "string", "positional": true },
+          { "name": "path", "type": "string", "occurs": "?", "positional": true }
+        ]
+      },
+      "params": { "path": "src", "symbol": "Parser" },
+      "options": { "positional": true },
+      "expect": { "argv": ["--", "Parser", "src"] }
+    },
+    {
+      "name": "positionals follow schema order when params keys are sorted",
+      "schema": {
+        "name": "copy",
+        "params": [
+          { "name": "source", "type": "string", "positional": true },
+          { "name": "dest", "type": "string", "positional": true }
+        ]
+      },
+      "params": { "dest": "b.txt", "source": "a.txt" },
+      "options": { "positional": true },
+      "expect": { "argv": ["--", "a.txt", "b.txt"] }
+    },
+    {
+      "name": "positionals follow schema order when params keys are neither sorted nor in schema order",
+      "schema": {
+        "name": "move",
+        "params": [
+          { "name": "mode", "type": "string", "positional": true },
+          { "name": "from", "type": "string", "positional": true },
+          { "name": "to", "type": "string", "positional": true }
+        ]
+      },
+      "params": { "to": "c", "mode": "a", "from": "b" },
+      "options": { "positional": true },
+      "expect": { "argv": ["--", "a", "b", "c"] }
+    },
+    {
+      "name": "a variadic last positional expands in place after the single positionals",
+      "schema": {
+        "name": "grep",
+        "params": [
+          { "name": "pattern", "type": "string", "positional": true },
+          { "name": "paths", "type": "array", "items": "string", "occurs": "*", "positional": true }
+        ]
+      },
+      "params": { "paths": ["src", "tests"], "pattern": "-x" },
+      "options": { "positional": true },
+      "expect": { "argv": ["--", "-x", "src", "tests"] }
+    },
+    {
+      "name": "named flags precede the separator; positionals after it in schema order",
+      "schema": {
+        "name": "search",
+        "params": [
+          { "name": "query", "type": "string", "positional": true },
+          { "name": "limit", "type": "number", "occurs": "?" },
+          { "name": "root", "type": "string", "occurs": "?", "positional": true },
+          { "name": "verbose", "type": "boolean", "occurs": "?" }
+        ]
+      },
+      "params": { "verbose": true, "root": ".", "limit": 5, "query": "needle" },
+      "options": { "positional": true },
+      "expect": { "argv": ["--limit=5", "--verbose", "--", "needle", "."] }
+    },
+    {
+      "name": "an omitted optional positional leaves no gap",
+      "schema": {
+        "name": "impact",
+        "params": [
+          { "name": "symbol", "type": "string", "positional": true },
+          { "name": "path", "type": "string", "occurs": "?", "positional": true }
+        ]
+      },
+      "params": { "symbol": "Parser" },
+      "options": { "positional": true },
+      "expect": { "argv": ["--", "Parser"] }
+    },
+    {
+      "name": "without the positional option every param is a flag",
+      "schema": {
+        "name": "impact",
+        "params": [
+          { "name": "symbol", "type": "string", "positional": true },
+          { "name": "path", "type": "string", "occurs": "?", "positional": true }
+        ]
+      },
+      "params": { "path": "src", "symbol": "Parser" },
+      "options": { "positional": false },
+      "expect": { "argv": ["--path=src", "--symbol=Parser"] }
+    }
+  ]
+}
