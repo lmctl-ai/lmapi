@@ -1,3 +1,7 @@
+> **Archived — 2026-11-02.** This legacy lmapi CLI-schema specification is retired in favor of the maintained [lmcode language and host contract](https://github.com/lmctl-ai/lmcode).
+> New integrations should use lmcode hosts and the lmscript compiler. Successor APIs and policy behavior differ.
+> Original documentation, schemas, conformance fixtures, source, tags and existing releases are retained for pinned and historical consumers.
+
 # lmapi — the API for the LLM era
 
 REST and OpenAPI defined how software talks to web services: an HTTP server, a URL per
